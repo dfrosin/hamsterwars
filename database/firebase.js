@@ -5,7 +5,14 @@ import { getFirestore } from 'firebase/firestore'
 // import firebaseConfig from './firebaseConfig.json' assert { type: 'json' }
 import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
-const firebaseConfig = require('./firebaseConfig.json')
+// const firebaseConfig = require('./firebaseConfig.json')
+
+let firebaseConfig
+if (process.env.PRIVATE_KEY) {
+  firebaseConfig = JSON.parse(process.env.PRIVATE_KEY)
+} else {
+  firebaseConfig = require('./firebaseConfig.json')
+}
 
 const app = initializeApp(firebaseConfig)
 

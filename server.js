@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const staticFolder = path.join(__dirname, 'public')
 
-const PORT = 8090
+const PORT = process.env.PORT || 8090
 import hamsters from './routes/hamsters.js'
 import matches from './routes/matches.js'
 import matchWinners from './routes/matchWinners.js'
