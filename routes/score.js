@@ -19,7 +19,7 @@ router.get('/:challenger/:defender', async (req, res) => {
     where('loserId', '==', challenger)
   )
 
-  const firstSnapshot = await getDocs(firstColRef, secondColRef)
+  const firstSnapshot = await getDocs(firstColRef)
   console.log(firstSnapshot)
   const secondSnapshot = await getDocs(secondColRef)
   firstSnapshot.docs.forEach((snapshot) => {
