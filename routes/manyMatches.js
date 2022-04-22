@@ -6,7 +6,6 @@ import { db } from '../database/firebase.js'
 
 router.get('/', async (req, res) => {
   let manyMatches = []
-  let mostGames = -1
   let hamsters = []
 
   const colRef = collection(db, 'hamsters')
@@ -15,6 +14,7 @@ router.get('/', async (req, res) => {
   snapshot.docs.forEach((snapshot) => {
     hamsters.push({ ...snapshot.data(), id: snapshot.id })
   })
+  let mostGames = hamsters[0].games
   hamsters.forEach((hamster) => {
     if (hamster.games > mostGames) {
       mostGames = hamster.games
