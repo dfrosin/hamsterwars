@@ -23,7 +23,10 @@ router.get('/', async (req, res) => {
   snapshot.docs.forEach((snapshot) => {
     hamsters.push({ ...snapshot.data(), id: snapshot.id })
   })
-  console.log('--- GET request for all hamsters occured ---')
+  console.log(
+    '\x1b[33m%s\x1b[0m',
+    '--- GET request for all hamsters occured ---'
+  )
   res.status(200).send(hamsters)
 })
 
@@ -36,19 +39,23 @@ router.get('/:getQuery', async (req, res) => {
       hamsters.push({ ...snapshot.data(), id: snapshot.id })
     })
     const randomHamster = hamsters[Math.floor(Math.random() * hamsters.length)]
-    console.log('GET request for a random hamster occured: ', randomHamster)
+    console.log(
+      '\x1b[33m%s\x1b[0m',
+      'GET request for a random hamster occured: ',
+      randomHamster
+    )
     res.status(200).send(randomHamster)
     return
   }
   if (hamsterData === 'cutest') {
     let hamsters = []
-    let difference = -10000
     let cutest = []
     const colRef = query(collection(db, 'hamsters'), orderBy('wins', 'desc'))
     const snapshot = await getDocs(colRef)
     snapshot.docs.forEach((snapshot) => {
       hamsters.push({ ...snapshot.data(), id: snapshot.id })
     })
+    let difference = hamsters[0].wins - hamsters[0].defeats
     hamsters.forEach((hamster) => {
       let currentDifference = hamster.wins - hamster.defeats
       if (currentDifference > difference) {
@@ -65,7 +72,11 @@ router.get('/:getQuery', async (req, res) => {
   const snapshot = await getDoc(docRef)
   const data = snapshot.data()
   if (snapshot.exists()) {
-    console.log('GET request for a specific hamster occured', data)
+    console.log(
+      '\x1b[33m%s\x1b[0m',
+      'GET request for a specific hamster occured',
+      data
+    )
     res.status(200).send(data)
     return
   }
@@ -73,7 +84,7 @@ router.get('/:getQuery', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  console.log('Add hamster attempt: ', req.body)
+  console.log('\x1b[33m%s\x1b[0m', 'Add hamster attempt: ', req.body)
   if (
     req.body.name === undefined ||
     req.body.age === undefined ||
@@ -96,7 +107,11 @@ router.post('/', async (req, res) => {
   let newHamster = req.body
   const addHamster = await addDoc(colRef, newHamster)
   const hamsterId = { id: addHamster.id }
-  console.log('POST request for hamsters occured successfully: ', hamsterId)
+  console.log(
+    '\x1b[33m%s\x1b[0m',
+    'POST request for hamsters occured successfully: ',
+    hamsterId
+  )
   res.status(200).send(hamsterId)
 })
 
@@ -121,10 +136,13 @@ router.delete('/:id', async (req, res) => {
   const toBeDeleted = req.params.id
   const docRef = doc(colRef, toBeDeleted)
   const snapshot = await getDoc(docRef)
-  console.log('Hamster to be deleted: ', toBeDeleted)
+  console.log('\x1b[33m%s\x1b[0m', 'Hamster to be deleted: ', toBeDeleted)
   if (snapshot.exists()) {
     await deleteDoc(docRef)
-    console.log('--- Successful hamster delete attempt occured ---')
+    console.log(
+      '\x1b[33m%s\x1b[0m',
+      '--- Successful hamster delete attempt occured ---'
+    )
     res.sendStatus(200)
     return
   }

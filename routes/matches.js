@@ -20,7 +20,10 @@ router.get('/', async (req, res) => {
   snapshot.docs.forEach((snapshot) => {
     matches.push({ ...snapshot.data(), id: snapshot.id })
   })
-  console.log('--- GET request for all matches occured ---')
+  console.log(
+    '\x1b[33m%s\x1b[0m',
+    '--- GET request for all matches occured ---'
+  )
   res.status(200).send(matches)
 })
 
@@ -30,7 +33,11 @@ router.get('/:id', async (req, res) => {
   const snapshot = await getDoc(docRef)
   const data = snapshot.data()
   if (snapshot.exists()) {
-    console.log('GET request for a specific match occured', data)
+    console.log(
+      '\x1b[33m%s\x1b[0m',
+      'GET request for a specific match occured',
+      data
+    )
     res.status(200).send(data)
     return
   }
@@ -38,7 +45,7 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  console.log('Add match attempt: ', req.body)
+  console.log('\x1b[33m%s\x1b[0m', 'Add match attempt: ', req.body)
   if (req.body.winnerId === undefined || req.body.loserId === undefined) {
     console.log(
       '\x1b[31m%s\x1b[0m',
@@ -52,7 +59,11 @@ router.post('/', async (req, res) => {
   let newMatch = req.body
   const addMatch = await addDoc(colRef, newMatch)
   const matchId = { id: addMatch.id }
-  console.log('POST request for matches occured successfully: ', matchId)
+  console.log(
+    '\x1b[33m%s\x1b[0m',
+    'POST request for matches occured successfully: ',
+    matchId
+  )
   res.status(200).send(matchId)
 })
 
@@ -60,10 +71,13 @@ router.delete('/:id', async (req, res) => {
   const toBeDeleted = req.params.id
   const docRef = doc(colRef, toBeDeleted)
   const snapshot = await getDoc(docRef)
-  console.log('Match to be deleted: ', toBeDeleted)
+  console.log('\x1b[33m%s\x1b[0m', 'Match to be deleted: ', toBeDeleted)
   if (snapshot.exists()) {
     await deleteDoc(docRef)
-    console.log('--- Successful match delete attempt occured ---')
+    console.log(
+      '\x1b[33m%s\x1b[0m',
+      '--- Successful match delete attempt occured ---'
+    )
     res.sendStatus(200)
     return
   }

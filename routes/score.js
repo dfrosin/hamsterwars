@@ -20,7 +20,6 @@ router.get('/:challenger/:defender', async (req, res) => {
   )
 
   const firstSnapshot = await getDocs(firstColRef)
-  console.log(firstSnapshot)
   const secondSnapshot = await getDocs(secondColRef)
   firstSnapshot.docs.forEach((snapshot) => {
     const data = snapshot.data()
